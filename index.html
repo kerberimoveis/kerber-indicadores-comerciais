@@ -93,7 +93,9 @@
   const iso = d => {const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)};
   document.getElementById('entryDate').value = iso(today);
   document.getElementById('toDate').value = iso(today);
-  const start = new Date(); start.setDate(start.getDate()-29);
+  const start = new Date();
+  const dayOfWeek = start.getDay();
+  start.setDate(start.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
   document.getElementById('fromDate').value = iso(start);
 
   function message(text,kind){const el=document.getElementById('formMessage');el.textContent=text;el.className='message show '+kind}
