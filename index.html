@@ -121,7 +121,7 @@
     await loadData();
   });
   document.getElementById('refreshBtn').addEventListener('click',loadData);
-  if(SUPABASE_URL.startsWith('https://')&&SUPABASE_ANON_KEY.startsWith('eyJ')){
+  if(SUPABASE_URL.startsWith('https://')&&(SUPABASE_ANON_KEY.startsWith('eyJ')||SUPABASE_ANON_KEY.startsWith('sb_publishable_'))){
     db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
     setStatus(true,'Conexão configurada');loadData();
   }else{setStatus(false,'Aguardando configuração do banco')}
