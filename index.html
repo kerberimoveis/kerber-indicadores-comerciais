@@ -188,11 +188,11 @@
   document.getElementById('refreshBtn').addEventListener('click',loadData);
   const supabaseReady=!!(window.supabase&&typeof window.supabase.createClient==='function');
   const chartReady=typeof window.Chart==='function';
-  if(!supabaseReady){setStatus(false,'Biblioteca Supabase indisponível');document.getElementById('chartNotice').textContent='Não foi possível carregar a biblioteca Supabase JS. Verifique sua conexão e recarregue a página.';document.getElementById('boardNotice').textContent='Biblioteca Supabase indisponível. Os indicadores não puderam ser consultados.'}
+  if(!supabaseReady){setStatus(false,'Biblioteca Supabase indisponível');document.getElementById('chartNotice').textContent='Não foi possível carregar a biblioteca Supabase JS. Verifique sua conexão e recarregue a página.';loadDailyBoard()}
   if(!chartReady){document.getElementById('chartNotice').textContent='Não foi possível carregar a biblioteca Chart.js. Verifique sua conexão e recarregue a página.'}
   if(supabaseReady&&SUPABASE_URL.startsWith('https://')&&(SUPABASE_ANON_KEY.startsWith('eyJ')||SUPABASE_ANON_KEY.startsWith('sb_publishable_'))){
     try{db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);setStatus(true,'Conexão configurada');loadData()}
-    catch(error){setStatus(false,'Falha ao iniciar conexão');document.getElementById('chartNotice').textContent='Não foi possível iniciar o Supabase: '+error.message;document.getElementById('boardNotice').textContent='Falha ao iniciar a conexão com o banco.'}
+    catch(error){setStatus(false,'Falha ao iniciar conexão');document.getElementById('chartNotice').textContent='Não foi possível iniciar o Supabase: '+error.message;loadDailyBoard()}
   }else if(supabaseReady){setStatus(false,'Aguardando configuração do banco');loadDailyBoard()}
 </script>
 </body>
