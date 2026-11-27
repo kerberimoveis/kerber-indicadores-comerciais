@@ -20,12 +20,13 @@
     main{max-width:1440px;margin:0 auto;padding:30px 28px 60px}.intro{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:25px}.eyebrow{color:var(--gold2);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase}.intro h1{font:800 clamp(25px,3vw,36px) Montserrat;margin:8px 0 6px}.intro p{margin:0;color:var(--muted);font-size:14px}
     .panel{background:linear-gradient(145deg,#191919,#121212);border:1px solid var(--line);border-radius:15px;padding:22px;box-shadow:0 12px 35px #0003}.panel h2{font:700 15px Montserrat;margin:0 0 5px}.sub{font-size:12px;color:var(--muted);margin:0 0 18px}
     .entry{margin-bottom:25px}.formgrid{display:grid;grid-template-columns:1.2fr 1.2fr repeat(4,1fr);gap:13px;align-items:end}.field label{display:block;color:#c7c2b5;font-size:11px;font-weight:600;margin-bottom:7px}.field input,.field select{width:100%;background:#0d0d0d;border:1px solid #393939;border-radius:8px;color:var(--white);padding:12px 11px;font:500 13px 'DM Sans';outline:none}.field input:focus,.field select:focus{border-color:var(--gold)}.submit{border:0;border-radius:8px;background:linear-gradient(120deg,#b58b35,#e0c16d);color:#17130a;padding:13px 18px;font-weight:800;font-size:13px;cursor:pointer;width:100%;margin-top:14px}.submit:disabled{opacity:.5;cursor:not-allowed}
+    .weekly-entry{margin:0 0 25px}.weekly-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;align-items:end}.weekly-grid input[readonly]{color:var(--gold2);background:#17140e;border-color:#514326}.weekly-grid .field label{min-height:27px;line-height:1.3}
     .toolbar{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:18px}.toolbar .field{min-width:150px}.toolbar button{background:#242424;border:1px solid #414141;color:var(--white);padding:11px 15px;border-radius:8px;cursor:pointer;font-weight:600}.toolbar button:hover{border-color:var(--gold)}
     .daily-board{margin:0 0 25px}.board-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:14px}.board-head h2{font:700 17px Montserrat;margin:5px 0 0}.board-date-field{min-width:165px}.board-date{background:#0d0d0d;border:1px solid #393939;border-radius:8px;color:var(--gold2);font:700 12px "DM Sans";padding:10px 11px;cursor:pointer}.board-date:focus{outline:none;border-color:var(--gold)}.team-board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.team-card{position:relative;overflow:hidden;background:linear-gradient(145deg,#1c1c1c,#101010);border:1px solid #343434;border-radius:14px;padding:17px;min-width:0}.team-card:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--team-color)}.team-top{display:flex;align-items:center;gap:12px;margin-bottom:17px}.team-logo{width:62px;height:62px;object-fit:contain;flex:0 0 62px;filter:drop-shadow(0 3px 8px #0008)}.team-name{font:800 13px Montserrat;letter-spacing:.5px}.team-kicker{font-size:10px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:1px}.team-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.team-stat{background:#ffffff08;border:1px solid #ffffff0d;border-radius:9px;padding:10px}.team-stat strong{display:block;font:800 23px Montserrat;color:var(--white);line-height:1.1}.team-stat span{display:block;color:#aaa;font-size:10px;margin-top:5px;line-height:1.25}.team-card.state-loading .team-stats{opacity:.45}.team-card.state-empty{border-style:dashed}.team-card.state-error{border-color:#8b4545}.team-state{display:inline-block;margin:-6px 0 12px;padding:4px 8px;border-radius:5px;background:#ffffff0d;color:#c8c8c8;font-size:10px;font-weight:700;letter-spacing:.2px}.team-card.state-error .team-state{background:#3a1d1d;color:#ffc0c0}.team-card.state-data .team-state{background:#183326;color:#b5f0ca}.board-empty{color:var(--muted);font-size:12px;margin:13px 2px 0}.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.chartbox{min-height:330px}.charthead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.charthead h3{font:700 14px Montserrat;margin:0}.charthead span{color:var(--muted);font-size:11px}.canvaswrap{height:245px;position:relative}
     .notice{margin-top:15px;color:var(--muted);font-size:12px;line-height:1.5}.message{display:none;margin-top:13px;padding:11px 13px;border-radius:8px;font-size:13px}.message.show{display:block}.message.error{background:#3a1d1d;color:#ffc0c0}.message.success{background:#183326;color:#b5f0ca}
     .empty{border:1px dashed #444;border-radius:12px;padding:35px;text-align:center;color:var(--muted);font-size:13px;grid-column:1/-1}
     footer{max-width:1440px;margin:auto;padding:0 28px 28px;color:#777;font-size:11px}
-    @media(max-width:1000px){.formgrid{grid-template-columns:repeat(3,1fr)}.team-board{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.head,main{padding-left:16px;padding-right:16px}.intro{display:block}.status{display:none}.formgrid{grid-template-columns:repeat(2,1fr)}.team-board{grid-template-columns:1fr 1fr;gap:9px}.team-card{padding:13px 11px}.team-logo{width:48px;height:48px;flex-basis:48px}.team-top{gap:8px;margin-bottom:12px}.team-name{font-size:11px}.team-stat{padding:8px}.team-stat strong{font-size:19px}.team-stat span{font-size:9px}.charts{grid-template-columns:1fr}.panel{padding:17px}.chartbox{min-height:300px}.canvaswrap{height:220px}}
+    @media(max-width:1000px){.formgrid{grid-template-columns:repeat(3,1fr)}.weekly-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.team-board{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.head,main{padding-left:16px;padding-right:16px}.intro{display:block}.status{display:none}.formgrid{grid-template-columns:repeat(2,1fr)}.weekly-grid{grid-template-columns:1fr 1fr}.team-board{grid-template-columns:1fr 1fr;gap:9px}.team-card{padding:13px 11px}.team-logo{width:48px;height:48px;flex-basis:48px}.team-top{gap:8px;margin-bottom:12px}.team-name{font-size:11px}.team-stat{padding:8px}.team-stat strong{font-size:19px}.team-stat span{font-size:9px}.charts{grid-template-columns:1fr}.panel{padding:17px}.chartbox{min-height:300px}.canvaswrap{height:220px}}
   </style>
 </head>
 <body>
@@ -47,6 +48,25 @@
       <div class="message" id="formMessage" role="status"></div>
     </form>
     <p class="notice">Para evitar alterações indevidas cada equipe pode ter apenas um lançamento por dia. Em caso de correções, chame o administrador (Gustavo).</p>
+  </section>
+  <section class="panel entry weekly-entry">
+    <h2>Lançamento Semanal</h2>
+    <p class="sub">Selecione a equipe e a semana. Os pré-cadastros e percentuais serão calculados automaticamente a partir dos lançamentos diários.</p>
+    <form id="weeklyForm">
+      <div class="weekly-grid">
+        <div class="field"><label for="weeklyTeam">Equipe</label><select id="weeklyTeam" required><option value="">Selecione</option><option>CANOAS</option><option>POA</option><option>POA ZS</option><option>VIAMÃO</option></select></div>
+        <div class="field"><label for="weeklyWeek">Semana</label><input id="weeklyWeek" type="week" required></div>
+        <div class="field"><label for="weeklyPre">Pré-Cadastros</label><input id="weeklyPre" type="text" value="—" readonly></div>
+        <div class="field"><label for="weeklyApproved">Aprovados Compra</label><input id="weeklyApproved" type="number" min="0" step="1" required></div>
+        <div class="field"><label for="weeklyApprovedNoCondition">Aprovado sem Condição</label><input id="weeklyApprovedNoCondition" type="number" min="0" step="1" required></div>
+        <div class="field"><label for="weeklyRejected">Reprovados</label><input id="weeklyRejected" type="number" min="0" step="1" required></div>
+        <div class="field"><label for="weeklyAttendance">Percentual de Comparecimento em Mesa</label><input id="weeklyAttendance" type="text" value="—" readonly></div>
+        <div class="field"><label for="weeklyClosing">Percentual de Fechamento em Mesa</label><input id="weeklyClosing" type="text" value="—" readonly></div>
+      </div>
+      <button class="submit" id="weeklySubmitBtn" type="submit">Salvar lançamento semanal</button>
+      <div class="message" id="weeklyMessage" role="status"></div>
+    </form>
+    <p class="notice">Cada equipe pode ter apenas um lançamento por semana. Para corrigir um lançamento já salvo, solicite o ajuste ao administrador (Gustavo).</p>
   </section>
   <section class="daily-board" aria-label="Indicadores diários por equipe">
     <div class="board-head"><div><div class="eyebrow" id="boardEyebrow">Visão do dia anterior</div><h2 id="boardTitle">Resultado do dia anterior por equipe</h2></div><div class="field board-date-field"><label for="boardDatePicker">Escolher dia</label><input class="board-date" id="boardDatePicker" type="date" aria-label="Escolher dia para visualizar"></div></div>
@@ -93,6 +113,8 @@
   const iso = d => {const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)};
   const todayISO = iso(today);
   document.querySelectorAll('input[type="date"]').forEach(input=>input.max=todayISO);
+  document.getElementById('weeklyWeek').max=isoWeekValue(today);
+  document.getElementById('weeklyWeek').value=isoWeekValue(today);
   document.getElementById('entryDate').value = todayISO;
   document.getElementById('toDate').value = todayISO;
   const boardDefaultDate = new Date();
@@ -103,6 +125,77 @@
   start.setDate(start.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
   document.getElementById('fromDate').value = iso(start);
 
+  function isoWeekStart(value){
+    if(!value)return '';
+    const [year,week]=value.split('-W').map(Number);
+    const jan4=new Date(Date.UTC(year,0,4));
+    const weekday=jan4.getUTCDay()||7;
+    jan4.setUTCDate(jan4.getUTCDate()-weekday+1+(week-1)*7);
+    return jan4.toISOString().slice(0,10);
+  }
+  function isoWeekValue(date){
+    const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));
+    const weekday=d.getUTCDay()||7;
+    d.setUTCDate(d.getUTCDate()+4-weekday);
+    const yearStart=new Date(Date.UTC(d.getUTCFullYear(),0,1));
+    const week=Math.ceil((((d-yearStart)/86400000)+1)/7);
+    return d.getUTCFullYear()+'-W'+String(week).padStart(2,'0');
+  }
+  function addDaysISO(value,days){
+    const d=new Date(value+'T00:00:00Z');
+    d.setUTCDate(d.getUTCDate()+days);
+    return d.toISOString().slice(0,10);
+  }
+  function formatPercent(value){return value===null?'—':value.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+'%'}
+  function weeklyMessage(text,kind){const el=document.getElementById('weeklyMessage');el.textContent=text;el.className='message show '+kind}
+  function resetWeeklyManualFields(){
+    ['weeklyApproved','weeklyApprovedNoCondition','weeklyRejected'].forEach(id=>{document.getElementById(id).value='';document.getElementById(id).disabled=false});
+    const button=document.getElementById('weeklySubmitBtn');button.disabled=false;button.textContent='Salvar lançamento semanal';
+  }
+  async function loadWeeklyPreview(){
+    const team=document.getElementById('weeklyTeam').value;
+    const week=document.getElementById('weeklyWeek').value;
+    const button=document.getElementById('weeklySubmitBtn');
+    resetWeeklyManualFields();
+    document.getElementById('weeklyMessage').className='message';
+    document.getElementById('weeklyPre').value='—';
+    document.getElementById('weeklyAttendance').value='—';
+    document.getElementById('weeklyClosing').value='—';
+    if(!team||!week)return;
+    if(week>isoWeekValue(today)){weeklyMessage('Selecione a semana atual ou uma semana passada.','error');return}
+    if(!db){weeklyMessage('A conexão com o Supabase não está disponível.','error');return}
+    const startDate=isoWeekStart(week);
+    const endDate=[addDaysISO(startDate,6),todayISO].sort()[0];
+    button.disabled=true;button.textContent='Consultando semana…';
+    try{
+      const dailyRows=await queryWithRetry(()=>db.from('indicadores_diarios').select('pre_cadastros,mesas_marcadas,fechamentos,assinaturas').eq('equipe',team).gte('data',startDate).lte('data',endDate));
+      const totals=(dailyRows||[]).reduce((sum,row)=>{
+        sum.pre_cadastros+=Number(row.pre_cadastros)||0;
+        sum.mesas_marcadas+=Number(row.mesas_marcadas)||0;
+        sum.fechamentos+=Number(row.fechamentos)||0;
+        sum.assinaturas+=Number(row.assinaturas)||0;
+        return sum;
+      },{pre_cadastros:0,mesas_marcadas:0,fechamentos:0,assinaturas:0});
+      document.getElementById('weeklyPre').value=String(totals.pre_cadastros);
+      document.getElementById('weeklyAttendance').value=formatPercent(totals.mesas_marcadas?totals.fechamentos/totals.mesas_marcadas*100:null);
+      document.getElementById('weeklyClosing').value=formatPercent(totals.fechamentos?totals.assinaturas/totals.fechamentos*100:null);
+      const saved=await queryWithRetry(()=>db.from('indicadores_semanais').select('aprovados_compra,aprovado_sem_condicao,reprovados').eq('equipe',team).eq('semana_inicio',startDate).maybeSingle());
+      if(saved){
+        document.getElementById('weeklyApproved').value=saved.aprovados_compra;
+        document.getElementById('weeklyApprovedNoCondition').value=saved.aprovado_sem_condicao;
+        document.getElementById('weeklyRejected').value=saved.reprovados;
+        ['weeklyApproved','weeklyApprovedNoCondition','weeklyRejected'].forEach(id=>document.getElementById(id).disabled=true);
+        button.disabled=true;button.textContent='Lançamento semanal já realizado';
+        weeklyMessage('Os dados manuais desta equipe já foram salvos para a semana selecionada. Para corrigir, solicite ao administrador.','success');
+      }else{
+        button.disabled=false;button.textContent='Salvar lançamento semanal';
+        weeklyMessage('Pré-cadastros e percentuais atualizados com os lançamentos diários da semana.','success');
+      }
+    }catch(error){
+      button.disabled=true;button.textContent='Não foi possível consultar';
+      weeklyMessage('Erro ao consultar os dados semanais: '+(error.message||'erro desconhecido')+'. Confirme se a tabela indicadores_semanais já foi criada no Supabase.','error');
+    }
+  }
   function message(text,kind){const el=document.getElementById('formMessage');el.textContent=text;el.className='message show '+kind}
   function setStatus(ok,text){document.getElementById('statusDot').classList.toggle('on',ok);document.getElementById('statusText').textContent=text}
   function chartOptions(){return {responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{color:'#ddd',usePointStyle:true,boxWidth:8,font:{family:'DM Sans',size:11}}},tooltip:{backgroundColor:'#111',borderColor:'#555',borderWidth:1}},scales:{x:{ticks:{color:'#aaa',maxRotation:0,autoSkip:true,maxTicksLimit:9},grid:{color:'#292929'}},y:{beginAtZero:true,ticks:{color:'#aaa',precision:0},grid:{color:'#292929'}}}}}
@@ -198,10 +291,43 @@
       message(error.code==='23505'?'Já existe um lançamento para esta equipe nesta data. Para corrigir, solicite o ajuste administrativo.':'Não foi possível confirmar o salvamento: '+(error.message||'falha de conexão')+'. Confira os dados antes de tentar novamente.','error');
     }finally{btn.disabled=false;btn.textContent='Salvar indicadores do dia'}
   });
+  document.getElementById('weeklyTeam').addEventListener('change',loadWeeklyPreview);
+  document.getElementById('weeklyWeek').addEventListener('change',loadWeeklyPreview);
+  document.getElementById('weeklyForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const btn=document.getElementById('weeklySubmitBtn');
+    const team=document.getElementById('weeklyTeam').value;
+    const week=document.getElementById('weeklyWeek').value;
+    if(!db){weeklyMessage('A conexão com o Supabase não está disponível.','error');return}
+    if(!team||!week){weeklyMessage('Selecione a equipe e a semana.','error');return}
+    if(week>isoWeekValue(today)){weeklyMessage('Não é permitido lançar dados de uma semana futura.','error');return}
+    const payload={
+      equipe:team,
+      semana_inicio:isoWeekStart(week),
+      aprovados_compra:Number(document.getElementById('weeklyApproved').value),
+      aprovado_sem_condicao:Number(document.getElementById('weeklyApprovedNoCondition').value),
+      reprovados:Number(document.getElementById('weeklyRejected').value)
+    };
+    if(Object.values(payload).some(value=>value===null||value===undefined||value==='')||[payload.aprovados_compra,payload.aprovado_sem_condicao,payload.reprovados].some(value=>!Number.isInteger(value)||value<0)){
+      weeklyMessage('Preencha os três campos manuais com números inteiros iguais ou maiores que zero.','error');return;
+    }
+    btn.disabled=true;btn.textContent='Salvando…';
+    try{
+      const {error}=await db.from('indicadores_semanais').insert(payload);
+      if(error)throw error;
+      weeklyMessage('Lançamento semanal salvo com sucesso!','success');
+      await loadWeeklyPreview();
+    }catch(error){
+      weeklyMessage(error.code==='23505'?'Já existe um lançamento semanal para esta equipe. Para corrigir, solicite o ajuste administrativo.':'Não foi possível salvar o lançamento semanal: '+(error.message||'falha de conexão')+'.','error');
+      btn.disabled=false;btn.textContent='Salvar lançamento semanal';
+    }
+  });
   document.getElementById('refreshBtn').addEventListener('click',loadData);
   document.getElementById('boardDatePicker').addEventListener('change',()=>{boardDateManuallyChanged=true;loadDailyBoard()});
   const supabaseReady=!!(window.supabase&&typeof window.supabase.createClient==='function');
   const chartReady=typeof window.Chart==='function';
+  document.getElementById('weeklyTeam').value='';
+
   if(!supabaseReady){setStatus(false,'Biblioteca Supabase indisponível');document.getElementById('chartNotice').textContent='Não foi possível carregar a biblioteca Supabase JS. Verifique sua conexão e recarregue a página.';loadDailyBoard()}
   if(!chartReady){document.getElementById('chartNotice').textContent='Não foi possível carregar a biblioteca Chart.js. Verifique sua conexão e recarregue a página.'}
   if(supabaseReady&&SUPABASE_URL.startsWith('https://')&&(SUPABASE_ANON_KEY.startsWith('eyJ')||SUPABASE_ANON_KEY.startsWith('sb_publishable_'))){
