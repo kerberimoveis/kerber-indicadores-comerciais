@@ -84,6 +84,7 @@
       <div><div class="eyebrow">Comparativo</div><h2 style="font:700 17px Montserrat;margin:5px 0 0">Desempenho por equipe</h2></div>
       <div class="field"><label for="fromDate">De</label><input type="date" id="fromDate"></div>
       <div class="field"><label for="toDate">Até</label><input type="date" id="toDate"></div>
+      <div class="field"><label for="performanceMode">Visualização</label><select id="performanceMode"><option value="daily">Diário</option><option value="weekly">Semanal</option></select></div>
       <button id="refreshBtn" type="button">Atualizar gráficos</button>
     </div>
     <div class="charts" id="charts">
@@ -101,11 +102,19 @@
   const SUPABASE_URL = 'https://onspunarilnyylvjxacs.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_ndBT9AvNuVgLMjCm_8S2ng_gEAG4cyV';
   const TEAMS = ['CANOAS','POA','POA ZS','VIAMÃO'];
-  const METRICS = [
-    {key:'pre_cadastros',label:'Pré-Cadastros',canvas:'preChart'},
-    {key:'mesas_marcadas',label:'Mesas Marcadas',canvas:'mesasChart'},
-    {key:'fechamentos',label:'Fechamentos',canvas:'fechChart'},
-    {key:'assinaturas',label:'Assinaturas',canvas:'assinChart'}
+  const DAILY_METRICS = [
+    {key:'pre_cadastros',label:'Pré-Cadastros'},
+    {key:'mesas_marcadas',label:'Mesas Marcadas'},
+    {key:'fechamentos',label:'Fechamentos'},
+    {key:'assinaturas',label:'Assinaturas'}
+  ];
+  const WEEKLY_METRICS = [
+    {key:'pre_cadastros',label:'Pré-Cadastros'},
+    {key:'aprovados_compra',label:'Aprovados Compra'},
+    {key:'aprovado_sem_condicao',label:'Aprovado sem Condição'},
+    {key:'reprovados',label:'Reprovados'},
+    {key:'comparecimento_mesa',label:'Comparecimento em Mesa (%)'},
+    {key:'fechamento_mesa',label:'Fechamento em Mesa (%)'}
   ];
   const palette = ['#e53935','#2878d0','#f2c500','#36a66a']; // CANOAS: vermelho, POA: azul, POA ZS: amarelo, VIAMÃO: verde
   let db = null;
@@ -202,16 +211,44 @@
   function message(text,kind){const el=document.getElementById('formMessage');el.textContent=text;el.className='message show '+kind}
   function setStatus(ok,text){document.getElementById('statusDot').classList.toggle('on',ok);document.getElementById('statusText').textContent=text}
   function chartOptions(){return {responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{color:'#ddd',usePointStyle:true,boxWidth:8,font:{family:'DM Sans',size:11}}},tooltip:{backgroundColor:'#111',borderColor:'#555',borderWidth:1}},scales:{x:{ticks:{color:'#aaa',maxRotation:0,autoSkip:true,maxTicksLimit:9},grid:{color:'#292929'}},y:{beginAtZero:true,ticks:{color:'#aaa',precision:0},grid:{color:'#292929'}}}}}
+  function renderChartPanels(metrics,mode){
+    const container=document.getElementById('charts');
+    Object.values(charts).forEach(chart=>chart.destroy());
+    Object.keys(charts).forEach(key=>delete charts[key]);
+    container.innerHTML=metrics.map((metric,index)=>'<article class="panel chartbox"><div class="charthead"><h3>'+metric.label+'</h3><span>'+(mode==='weekly'?'Por semana · por equipe':'Por dia · por equipe')+'</span></div><div class="canvaswrap"><canvas id="performanceChart'+index+'"></canvas></div></article>').join('');
+  }
   function renderCharts(rows,from,to){
-    const days=[];
-    const cursor=new Date(from+'T00:00:00Z');
-    const end=new Date(to+'T00:00:00Z');
+    const days=[];const cursor=new Date(from+'T00:00:00Z');const end=new Date(to+'T00:00:00Z');
     while(cursor<=end){days.push(cursor.toISOString().slice(0,10));cursor.setUTCDate(cursor.getUTCDate()+1)}
+    renderChartPanels(DAILY_METRICS,'daily');
     document.getElementById('chartNotice').textContent=rows.length?'Comparação diária entre as quatro equipes. Dias sem lançamento aparecem como lacunas.':'Nenhum lançamento encontrado no período selecionado.';
-    METRICS.forEach(m=>{
-      if(charts[m.key]) charts[m.key].destroy();
-      const datasets=TEAMS.map((team,i)=>({label:team,data:days.map(day=>{const row=rows.find(r=>r.data===day&&r.equipe===team);return row?row[m.key]:null}),borderColor:palette[i],backgroundColor:palette[i],borderWidth:2,pointRadius:3,pointHoverRadius:5,spanGaps:false,tension:.25}));
-      charts[m.key]=new Chart(document.getElementById(m.canvas),{type:'line',data:{labels:days.map(d=>d.slice(8,10)+'/'+d.slice(5,7)),datasets},options:chartOptions()});
+    DAILY_METRICS.forEach((m,index)=>{
+      const datasets=TEAMS.map((team,i)=>({label:team,data:days.map(day=>{const row=rows.find(r=>r.data===day&&r.equipe===team);return row?Number(row[m.key])||0:null}),borderColor:palette[i],backgroundColor:palette[i],borderWidth:2,pointRadius:3,pointHoverRadius:5,spanGaps:false,tension:.25}));
+      charts[m.key]=new Chart(document.getElementById('performanceChart'+index),{type:'line',data:{labels:days.map(d=>d.slice(8,10)+'/'+d.slice(5,7)),datasets},options:chartOptions()});
+    });
+  }
+  function weekStartISO(value){const date=new Date(value+'T00:00:00Z');const weekday=date.getUTCDay()||7;date.setUTCDate(date.getUTCDate()-weekday+1);return date.toISOString().slice(0,10)}
+  async function loadWeeklyCharts(from,to){
+    const firstWeek=weekStartISO(from),lastWeek=weekStartISO(to);
+    const dailyEnd=[addDaysISO(lastWeek,6),todayISO].sort()[0];
+    const results=await Promise.all([
+      queryWithRetry(()=>db.from('indicadores_diarios').select('data,equipe,pre_cadastros,mesas_marcadas,fechamentos,assinaturas').gte('data',firstWeek).lte('data',dailyEnd).order('data',{ascending:true})),
+      queryWithRetry(()=>db.from('indicadores_semanais').select('semana_inicio,equipe,aprovados_compra,aprovado_sem_condicao,reprovados').gte('semana_inicio',firstWeek).lte('semana_inicio',lastWeek).order('semana_inicio',{ascending:true}))
+    ]);
+    const dailyRows=results[0]||[],weeklyRows=results[1]||[],weeks=[];
+    for(let week=firstWeek;week<=lastWeek;week=addDaysISO(week,7))weeks.push(week);
+    const aggregate=weeks.map(week=>({week,teams:TEAMS.map(team=>{
+      const daily=dailyRows.filter(row=>row.equipe===team&&row.data>=week&&row.data<=([addDaysISO(week,6),todayISO].sort()[0]));
+      const total=key=>daily.reduce((sum,row)=>sum+(Number(row[key])||0),0);
+      const saved=weeklyRows.find(row=>row.semana_inicio===week&&row.equipe===team);
+      const mesas=total('mesas_marcadas'),fechamentos=total('fechamentos'),assinaturas=total('assinaturas');
+      return {equipe:team,pre_cadastros:daily.length?total('pre_cadastros'):null,aprovados_compra:saved?Number(saved.aprovados_compra):null,aprovado_sem_condicao:saved?Number(saved.aprovado_sem_condicao):null,reprovados:saved?Number(saved.reprovados):null,comparecimento_mesa:daily.length&&mesas?fechamentos/mesas*100:null,fechamento_mesa:daily.length&&fechamentos?assinaturas/fechamentos*100:null};
+    })}));
+    renderChartPanels(WEEKLY_METRICS,'weekly');
+    document.getElementById('chartNotice').textContent=(dailyRows.length||weeklyRows.length)?'Comparação semanal entre as quatro equipes. Indicadores sem lançamento aparecem como lacunas.':'Nenhum lançamento encontrado no período selecionado.';
+    WEEKLY_METRICS.forEach((metric,index)=>{
+      const datasets=TEAMS.map((team,i)=>({label:team,data:aggregate.map(week=>{const row=week.teams.find(item=>item.equipe===team);return row?row[metric.key]:null}),borderColor:palette[i],backgroundColor:palette[i],borderWidth:2,pointRadius:3,pointHoverRadius:5,spanGaps:false,tension:.25}));
+      charts[metric.key]=new Chart(document.getElementById('performanceChart'+index),{type:'line',data:{labels:weeks.map(week=>'Semana '+formatBoardDate(week).slice(0,5)),datasets},options:chartOptions()});
     });
   }
   function formatBoardDate(value){if(!value)return 'Selecione uma data';const [y,m,d]=value.split('-');return d+'/'+m+'/'+y}
@@ -272,8 +309,12 @@
       const from=document.getElementById('fromDate').value,to=document.getElementById('toDate').value;
       if(!from||!to||from>to) throw new Error('Selecione um intervalo de datas válido.');
       if(from>todayISO||to>todayISO) throw new Error('Os gráficos permitem consultar somente datas até hoje.');
-      const rows=await queryWithRetry(()=>db.from('indicadores_diarios').select('data,equipe,pre_cadastros,mesas_marcadas,fechamentos,assinaturas').gte('data',from).lte('data',to).order('data',{ascending:true}));
-      renderCharts(rows||[],from,to);
+      if(document.getElementById('performanceMode').value==='weekly'){
+        await loadWeeklyCharts(from,to);
+      }else{
+        const rows=await queryWithRetry(()=>db.from('indicadores_diarios').select('data,equipe,pre_cadastros,mesas_marcadas,fechamentos,assinaturas').gte('data',from).lte('data',to).order('data',{ascending:true}));
+        renderCharts(rows||[],from,to);
+      }
     }catch(error){document.getElementById('chartNotice').textContent='Não foi possível carregar os gráficos: '+(error.message||'erro desconhecido')}
     finally{button.disabled=false;await loadDailyBoard()}
   }
@@ -326,6 +367,7 @@
     }
   });
   document.getElementById('refreshBtn').addEventListener('click',loadData);
+  document.getElementById('performanceMode').addEventListener('change',loadData);
   document.getElementById('boardDatePicker').addEventListener('change',()=>{boardDateManuallyChanged=true;loadDailyBoard()});
   const supabaseReady=!!(window.supabase&&typeof window.supabase.createClient==='function');
   const chartReady=typeof window.Chart==='function';
