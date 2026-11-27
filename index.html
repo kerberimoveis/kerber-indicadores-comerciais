@@ -55,7 +55,7 @@
         <div class="field"><label for="fech">Fechamentos</label><input id="fech" type="number" min="0" step="1" value="0" required></div>
         <div class="field"><label for="assin">Assinaturas</label><input id="assin" type="number" min="0" step="1" value="0" required></div>
       </div>
-      <button class="submit" id="submitBtn" type="submit">Salvar lançamentos do dia</button>
+      <button class="submit" id="submitBtn" type="submit">Salvar lançamento do dia</button>
       <div class="message" id="formMessage" role="status"></div>
     </form>
     <p class="notice">Para evitar alterações indevidas cada equipe pode ter apenas um lançamento por dia. Em caso de correções, chame o administrador (Gustavo).</p>
@@ -325,7 +325,7 @@
     if(!db){message('A conexão com o Supabase não está disponível.','error');return}
     btn.disabled=true;btn.textContent='Salvando…';
     const payload={equipe:document.getElementById('team').value,data:document.getElementById('entryDate').value,pre_cadastros:Number(document.getElementById('pre').value),mesas_marcadas:Number(document.getElementById('mesas').value),fechamentos:Number(document.getElementById('fech').value),assinaturas:Number(document.getElementById('assin').value)};
-    if(payload.data>todayISO){message('Não é permitido lançar indicadores para uma data futura.','error');btn.disabled=false;btn.textContent='Salvar lançamentos do dia';return}
+    if(payload.data>todayISO){message('Não é permitido lançar indicadores para uma data futura.','error');btn.disabled=false;btn.textContent='Salvar lançamento do dia';return}
     try{
       const {error}=await db.from('indicadores_diarios').insert(payload);
       if(error) throw error;
@@ -334,7 +334,7 @@
       await loadData();
     }catch(error){
       message(error.code==='23505'?'Já existe um lançamento para esta equipe nesta data. Para corrigir, solicite o ajuste administrativo.':'Não foi possível confirmar o salvamento: '+(error.message||'falha de conexão')+'. Confira os dados antes de tentar novamente.','error');
-    }finally{btn.disabled=false;btn.textContent='Salvar lançamentos do dia'}
+    }finally{btn.disabled=false;btn.textContent='Salvar lançamento do dia'}
   });
   document.getElementById('weeklyTeam').addEventListener('change',loadWeeklyPreview);
   document.getElementById('weeklyWeek').addEventListener('change',()=>{updateWeeklyWeekLabel();loadWeeklyPreview()});
