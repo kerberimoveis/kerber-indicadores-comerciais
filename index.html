@@ -91,8 +91,10 @@
   const charts = {};
   const today = new Date();
   const iso = d => {const x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)};
-  document.getElementById('entryDate').value = iso(today);
-  document.getElementById('toDate').value = iso(today);
+  const todayISO = iso(today);
+  document.querySelectorAll('input[type="date"]').forEach(input=>input.max=todayISO);
+  document.getElementById('entryDate').value = todayISO;
+  document.getElementById('toDate').value = todayISO;
   const boardDefaultDate = new Date();
   boardDefaultDate.setDate(boardDefaultDate.getDate()-1);
   document.getElementById('boardDatePicker').value = iso(boardDefaultDate);
@@ -141,6 +143,7 @@
   async function loadDailyBoard(){
     const date=document.getElementById('boardDatePicker').value;
     const dateLabel=formatBoardDate(date);
+    if(date>todayISO){document.getElementById('boardDatePicker').value=todayISO;document.getElementById('boardNotice').textContent='Não é possível consultar uma data futura.';return}
     document.getElementById('boardEyebrow').textContent=date?'Visão do dia '+dateLabel:'Visão do dia';
     document.getElementById('boardTitle').textContent=date?'Resultado do dia '+dateLabel+' por equipe':'Selecione um dia para visualizar';
     const cards=[...document.querySelectorAll('#teamBoard .team-card')];
@@ -171,6 +174,7 @@
       if(typeof window.Chart!=='function') throw new Error('A biblioteca Chart.js não foi carregada. Verifique sua conexão e recarregue a página.');
       const from=document.getElementById('fromDate').value,to=document.getElementById('toDate').value;
       if(!from||!to||from>to) throw new Error('Selecione um intervalo de datas válido.');
+      if(from>todayISO||to>todayISO) throw new Error('Os gráficos permitem consultar somente datas até hoje.');
       const rows=await queryWithRetry(()=>db.from('indicadores_diarios').select('data,equipe,pre_cadastros,mesas_marcadas,fechamentos,assinaturas').gte('data',from).lte('data',to).order('data',{ascending:true}));
       renderCharts(rows||[],from,to);
     }catch(error){document.getElementById('chartNotice').textContent='Não foi possível carregar os gráficos: '+(error.message||'erro desconhecido')}
@@ -182,6 +186,7 @@
     if(!db){message('A conexão com o Supabase não está disponível.','error');return}
     btn.disabled=true;btn.textContent='Salvando…';
     const payload={equipe:document.getElementById('team').value,data:document.getElementById('entryDate').value,pre_cadastros:Number(document.getElementById('pre').value),mesas_marcadas:Number(document.getElementById('mesas').value),fechamentos:Number(document.getElementById('fech').value),assinaturas:Number(document.getElementById('assin').value)};
+    if(payload.data>todayISO){message('Não é permitido lançar indicadores para uma data futura.','error');btn.disabled=false;btn.textContent='Salvar indicadores do dia';return}
     try{
       const {error}=await db.from('indicadores_diarios').insert(payload);
       if(error) throw error;
