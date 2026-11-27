@@ -20,6 +20,7 @@
     main{max-width:1440px;margin:0 auto;padding:30px 28px 60px}.intro{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:25px}.eyebrow{color:var(--gold2);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase}.intro h1{font:800 clamp(25px,3vw,36px) Montserrat;margin:8px 0 6px}.intro p{margin:0;color:var(--muted);font-size:14px}
     .panel{background:linear-gradient(145deg,#191919,#121212);border:1px solid var(--line);border-radius:15px;padding:22px;box-shadow:0 12px 35px #0003}.panel h2{font:700 15px Montserrat;margin:0 0 5px}.sub{font-size:12px;color:var(--muted);margin:0 0 18px}
     .entry{margin-bottom:25px}.formgrid{display:grid;grid-template-columns:1.2fr 1.2fr repeat(4,1fr);gap:13px;align-items:end}.field label{display:block;color:#c7c2b5;font-size:11px;font-weight:600;margin-bottom:7px}.field input,.field select{width:100%;background:#0d0d0d;border:1px solid #393939;border-radius:8px;color:var(--white);padding:12px 11px;font:500 13px 'DM Sans';outline:none}.field input:focus,.field select:focus{border-color:var(--gold)}.submit{border:0;border-radius:8px;background:linear-gradient(120deg,#b58b35,#e0c16d);color:#17130a;padding:13px 18px;font-weight:800;font-size:13px;cursor:pointer;width:100%;margin-top:14px}.submit:disabled{opacity:.5;cursor:not-allowed}
+    .week-picker-wrap{position:relative}.week-picker-wrap #weeklyWeekLabel{width:100%;background:#0d0d0d;border:1px solid #393939;border-radius:8px;color:var(--white);padding:12px 11px;font:500 13px "DM Sans";pointer-events:none}.week-picker-wrap #weeklyWeek{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.week-picker-wrap:focus-within #weeklyWeekLabel{border-color:var(--gold)}
     .weekly-entry{margin:0 0 25px}.weekly-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;align-items:end}.weekly-grid input[readonly]{color:var(--gold2);background:#17140e;border-color:#514326}.weekly-grid .field label{min-height:27px;line-height:1.3}
     .toolbar{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:18px}.toolbar .field{min-width:150px}.toolbar button{background:#242424;border:1px solid #414141;color:var(--white);padding:11px 15px;border-radius:8px;cursor:pointer;font-weight:600}.toolbar button:hover{border-color:var(--gold)}
     .daily-board{margin:0 0 25px}.board-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:14px}.board-head h2{font:700 17px Montserrat;margin:5px 0 0}.board-date-field{min-width:165px}.board-date{background:#0d0d0d;border:1px solid #393939;border-radius:8px;color:var(--gold2);font:700 12px "DM Sans";padding:10px 11px;cursor:pointer}.board-date:focus{outline:none;border-color:var(--gold)}.team-board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.team-card{position:relative;overflow:hidden;background:linear-gradient(145deg,#1c1c1c,#101010);border:1px solid #343434;border-radius:14px;padding:17px;min-width:0}.team-card:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--team-color)}.team-top{display:flex;align-items:center;gap:12px;margin-bottom:17px}.team-logo{width:62px;height:62px;object-fit:contain;flex:0 0 62px;filter:drop-shadow(0 3px 8px #0008)}.team-name{font:800 13px Montserrat;letter-spacing:.5px}.team-kicker{font-size:10px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:1px}.team-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.team-stat{background:#ffffff08;border:1px solid #ffffff0d;border-radius:9px;padding:10px}.team-stat strong{display:block;font:800 23px Montserrat;color:var(--white);line-height:1.1}.team-stat span{display:block;color:#aaa;font-size:10px;margin-top:5px;line-height:1.25}.team-card.state-loading .team-stats{opacity:.45}.team-card.state-empty{border-style:dashed}.team-card.state-error{border-color:#8b4545}.team-state{display:inline-block;margin:-6px 0 12px;padding:4px 8px;border-radius:5px;background:#ffffff0d;color:#c8c8c8;font-size:10px;font-weight:700;letter-spacing:.2px}.team-card.state-error .team-state{background:#3a1d1d;color:#ffc0c0}.team-card.state-data .team-state{background:#183326;color:#b5f0ca}.board-empty{color:var(--muted);font-size:12px;margin:13px 2px 0}.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.chartbox{min-height:330px}.charthead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.charthead h3{font:700 14px Montserrat;margin:0}.charthead span{color:var(--muted);font-size:11px}.canvaswrap{height:245px;position:relative}
@@ -55,7 +56,7 @@
     <form id="weeklyForm">
       <div class="weekly-grid">
         <div class="field"><label for="weeklyTeam">Equipe</label><select id="weeklyTeam" required><option value="">Selecione</option><option>CANOAS</option><option>POA</option><option>POA ZS</option><option>VIAMÃO</option></select></div>
-        <div class="field"><label for="weeklyWeek">Semana</label><input id="weeklyWeek" type="week" required></div>
+        <div class="field"><label for="weeklyWeek">Semana</label><div class="week-picker-wrap"><input id="weeklyWeekLabel" type="text" value="" placeholder="Selecione a semana" readonly tabindex="-1" aria-hidden="true"><input id="weeklyWeek" type="week" required aria-label="Selecionar semana"></div></div>
         <div class="field"><label for="weeklyPre">Pré-Cadastros</label><input id="weeklyPre" type="text" value="—" readonly></div>
         <div class="field"><label for="weeklyApproved">Aprovados Compra</label><input id="weeklyApproved" type="number" min="0" step="1" required></div>
         <div class="field"><label for="weeklyApprovedNoCondition">Aprovado sem Condição</label><input id="weeklyApprovedNoCondition" type="number" min="0" step="1" required></div>
@@ -115,6 +116,7 @@
   document.querySelectorAll('input[type="date"]').forEach(input=>input.max=todayISO);
   document.getElementById('weeklyWeek').max=isoWeekValue(today);
   document.getElementById('weeklyWeek').value=isoWeekValue(today);
+  updateWeeklyWeekLabel();
   document.getElementById('entryDate').value = todayISO;
   document.getElementById('toDate').value = todayISO;
   const boardDefaultDate = new Date();
@@ -133,6 +135,7 @@
     jan4.setUTCDate(jan4.getUTCDate()-weekday+1+(week-1)*7);
     return jan4.toISOString().slice(0,10);
   }
+  function updateWeeklyWeekLabel(){const value=document.getElementById('weeklyWeek').value;document.getElementById('weeklyWeekLabel').value=value?'Semana '+formatBoardDate(isoWeekStart(value)):'';}
   function isoWeekValue(date){
     const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));
     const weekday=d.getUTCDay()||7;
@@ -292,7 +295,7 @@
     }finally{btn.disabled=false;btn.textContent='Salvar indicadores do dia'}
   });
   document.getElementById('weeklyTeam').addEventListener('change',loadWeeklyPreview);
-  document.getElementById('weeklyWeek').addEventListener('change',loadWeeklyPreview);
+  document.getElementById('weeklyWeek').addEventListener('change',()=>{updateWeeklyWeekLabel();loadWeeklyPreview()});
   document.getElementById('weeklyForm').addEventListener('submit',async e=>{
     e.preventDefault();
     const btn=document.getElementById('weeklySubmitBtn');
