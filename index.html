@@ -143,7 +143,7 @@
   async function loadDailyBoard(){
     const date=document.getElementById('boardDatePicker').value;
     const dateLabel=formatBoardDate(date);
-    if(date>todayISO){document.getElementById('boardDatePicker').value=todayISO;document.getElementById('boardNotice').textContent='Não é possível consultar uma data futura.';return}
+    if(date>todayISO){document.getElementById('boardDatePicker').value=todayISO;return loadDailyBoard()}
     document.getElementById('boardEyebrow').textContent=date?'Visão do dia '+dateLabel:'Visão do dia';
     document.getElementById('boardTitle').textContent=date?'Resultado do dia '+dateLabel+' por equipe':'Selecione um dia para visualizar';
     const cards=[...document.querySelectorAll('#teamBoard .team-card')];
