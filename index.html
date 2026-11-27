@@ -140,12 +140,13 @@
     if(!badge){badge=document.createElement('div');badge.className='team-state';card.querySelector('.team-stats').insertAdjacentElement('beforebegin',badge)}
     badge.textContent=label;
   }
+  let boardDateManuallyChanged=false;
   async function loadDailyBoard(){
     const date=document.getElementById('boardDatePicker').value;
     const dateLabel=formatBoardDate(date);
     if(date>todayISO){document.getElementById('boardDatePicker').value=todayISO;return loadDailyBoard()}
-    document.getElementById('boardEyebrow').textContent=date?'Visão do dia '+dateLabel:'Visão do dia';
-    document.getElementById('boardTitle').textContent=date?'Resultado do dia '+dateLabel+' por equipe':'Selecione um dia para visualizar';
+    document.getElementById('boardEyebrow').textContent=boardDateManuallyChanged&&date?'Visão do dia '+dateLabel:'Visão do dia anterior';
+    document.getElementById('boardTitle').textContent=boardDateManuallyChanged&&date?'Resultado do dia '+dateLabel+' por equipe':'Resultado do dia anterior por equipe';
     const cards=[...document.querySelectorAll('#teamBoard .team-card')];
     cards.forEach(card=>setTeamCardState(card,'loading','Carregando…'));
     if(!date){cards.forEach(card=>setTeamCardState(card,'empty','Selecione um dia'));document.getElementById('boardNotice').textContent='Escolha uma data para consultar os indicadores.';return}
@@ -198,7 +199,7 @@
     }finally{btn.disabled=false;btn.textContent='Salvar indicadores do dia'}
   });
   document.getElementById('refreshBtn').addEventListener('click',loadData);
-  document.getElementById('boardDatePicker').addEventListener('change',loadDailyBoard);
+  document.getElementById('boardDatePicker').addEventListener('change',()=>{boardDateManuallyChanged=true;loadDailyBoard()});
   const supabaseReady=!!(window.supabase&&typeof window.supabase.createClient==='function');
   const chartReady=typeof window.Chart==='function';
   if(!supabaseReady){setStatus(false,'Biblioteca Supabase indisponível');document.getElementById('chartNotice').textContent='Não foi possível carregar a biblioteca Supabase JS. Verifique sua conexão e recarregue a página.';loadDailyBoard()}
